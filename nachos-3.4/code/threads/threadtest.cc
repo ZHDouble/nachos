@@ -46,10 +46,17 @@ ThreadTest1()
 {
     DEBUG('t', "Entering ThreadTest1");
 
-    Thread *t = new Thread("forked thread");
-
+    Thread *t1 = new Thread("forked thread");
+    Thread *t2 = new Thread("forked thread");
+    Thread *t3 = new Thread("forked thread");
+    t1->setUserId();
+    t1->setThreadId();
+    t2->setUserId();
+    t2->setThreadId();
+    t3->setUserId();
+    t3->setThreadId();
     t->Fork(SimpleThread, 1);
-    SimpleThread(0);
+    //SimpleThread(0);
 }
 
 //----------------------------------------------------------------------

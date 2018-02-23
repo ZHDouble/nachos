@@ -225,6 +225,28 @@ Thread::Sleep ()
     scheduler->Run(nextThread); // returns when we've been signalled
 }
 
+void setUserId(int id)
+{
+    userId = id;
+}
+
+int getUserId()
+{
+    printf("currUser is %d\n", userId);
+    return userId;
+}
+
+void setThreadId(int id)
+{
+    threadId = id;
+}
+
+int getThreadId()
+{
+    printf("currThread is %d\n", threadId);
+    return threadId;
+}
+
 //----------------------------------------------------------------------
 // ThreadFinish, InterruptEnable, ThreadPrint
 //	Dummy functions because C++ does not allow a pointer to a member
