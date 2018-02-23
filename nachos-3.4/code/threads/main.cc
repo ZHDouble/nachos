@@ -83,10 +83,11 @@ main(int argc, char **argv)
 {
     int argCount;			// the number of arguments 
 					// for a particular command
-
+	//printf("0000000000000000000000000000001\n");
     DEBUG('t', "Entering main");
     (void) Initialize(argc, argv);
     
+	//printf("0000000000000000000000000000002\n");
 #ifdef THREADS
     for (argc--, argv++; argc > 0; argc -= argCount, argv += argCount) {
       argCount = 1;
@@ -101,7 +102,9 @@ main(int argc, char **argv)
       }
     }
 
+	//printf("0000000000000000000000000000003\n");
     ThreadTest();
+	//printf("00000000000000000000000000000031\n");
 #endif
 
     for (argc--, argv++; argc > 0; argc -= argCount, argv += argCount) {
@@ -158,7 +161,7 @@ main(int argc, char **argv)
         }
 #endif // NETWORK
     }
-
+	//printf("000000000000000000000000000000000000000004\n");
     currentThread->Finish();	// NOTE: if the procedure "main" 
 				// returns, then the program "nachos"
 				// will exit (as any other normal program

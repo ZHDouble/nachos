@@ -11,7 +11,8 @@
 
 #include "copyright.h"
 #include "system.h"
-
+#include <vector>
+using namespace std;
 // testnum is set in main.cc
 int testnum = 1;
 
@@ -30,7 +31,7 @@ SimpleThread(int which)
     int num;
     
     for (num = 0; num < 5; num++) {
-	printf("*** thread %d looped %d times\n", which, num);
+	printf("*** thread %d looped %d times threadId %d userId %d\n", which, num, currentThread->getThreadId(), currentThread->getUserId());
         currentThread->Yield();
     }
 }
@@ -49,13 +50,16 @@ ThreadTest1()
     Thread *t1 = new Thread("forked thread");
     Thread *t2 = new Thread("forked thread");
     Thread *t3 = new Thread("forked thread");
-    t1->setUserId();
-    t1->setThreadId();
-    t2->setUserId();
-    t2->setThreadId();
-    t3->setUserId();
-    t3->setThreadId();
-    t->Fork(SimpleThread, 1);
+    t1->setUserId(1);
+    t1->setThreadId(1);
+    t2->setUserId(2);
+    t2->setThreadId(2);
+    t3->setUserId(3);
+    t3->setThreadId(3);
+    t1->Fork(SimpleThread, t1->getThreadId());
+    t2->Fork(SimpleThread, t2->getThreadId());
+    t3->Fork(SimpleThread, t3->getThreadId());
+    zhd_testint.push_back(1);   
     //SimpleThread(0);
 }
 

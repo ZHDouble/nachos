@@ -18,7 +18,8 @@ Interrupt *interrupt;			// interrupt status
 Statistics *stats;			// performance metrics
 Timer *timer;				// the hardware timer device,
 					// for invoking context switches
-
+vector<int> zhd_testint;
+map<int, Thread *> threadManage;
 #ifdef FILESYS_NEEDED
 FileSystem  *fileSystem;
 #endif
@@ -80,7 +81,6 @@ Initialize(int argc, char **argv)
     int argCount;
     char* debugArgs = "";
     bool randomYield = FALSE;
-
 #ifdef USER_PROGRAM
     bool debugUserProg = FALSE;	// single step user program
 #endif
@@ -195,3 +195,7 @@ Cleanup()
     Exit(0);
 }
 
+void ThreadManageInit()
+{
+    ;
+}

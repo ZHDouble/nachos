@@ -15,7 +15,10 @@
 #include "interrupt.h"
 #include "stats.h"
 #include "timer.h"
-
+#include <vector>
+#include <map>
+#include <iostream>
+using namespace std;
 // Initialization and cleanup routines
 extern void Initialize(int argc, char **argv); 	// Initialization,
 						// called before anything else
@@ -29,6 +32,8 @@ extern Interrupt *interrupt;			// interrupt status
 extern Statistics *stats;			// performance metrics
 extern Timer *timer;				// the hardware alarm clock
 
+extern vector<int> zhd_testint;
+extern map<int, Thread *> threadManage;
 #ifdef USER_PROGRAM
 #include "machine.h"
 extern Machine* machine;	// user program memory and registers

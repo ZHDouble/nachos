@@ -234,7 +234,7 @@ Thread::setUserId(int id)
 int 
 Thread::getUserId()
 {
-    printf("currUser is %d\n", userId);
+   // printf("currUser is %d\n", userId);
     return userId;
 }
 
@@ -247,7 +247,7 @@ Thread::setThreadId(int id)
 int 
 Thread::getThreadId()
 {
-    printf("currThread is %d\n", threadId);
+    //printf("currThread is %d\n", threadId);
     return threadId;
 }
 
