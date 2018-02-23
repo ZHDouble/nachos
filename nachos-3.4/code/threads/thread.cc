@@ -41,6 +41,16 @@ Thread::Thread(char* threadName)
 #ifdef USER_PROGRAM
     space = NULL;
 #endif
+    if (threadVecNum.size() <= 0) {
+        printf("当前线程已经达到上限, 不能够继续创建!");
+    }
+    else {
+        int TempId = 0;
+        TempId = threadVecNum.front();
+        threadVecNum.pop_front();
+        currentThread->setUserId(TempId);
+        currentThread->setThreadId(TempId);
+    }
 }
 
 //----------------------------------------------------------------------
@@ -87,14 +97,15 @@ Thread::~Thread()
 void 
 Thread::Fork(VoidFunctionPtr func, int arg)
 {
+    
     DEBUG('t', "Forking thread \"%s\" with func = 0x%x, arg = %d\n",
-	  name, (int) func, arg);
+    name, (int) func, arg);
     
     StackAllocate(func, arg);
 
     IntStatus oldLevel = interrupt->SetLevel(IntOff);
     scheduler->ReadyToRun(this);	// ReadyToRun assumes that interrupts 
-					// are disabled!
+                    // are disabled!
     (void) interrupt->SetLevel(oldLevel);
 }    
 
@@ -147,7 +158,12 @@ Thread::Finish ()
     ASSERT(this == currentThread);
     
     DEBUG('t', "Finishing thread \"%s\"\n", getName());
-    threadVecNum.push_back(currentThread->getThreadId());
+    if (threadVecNum.size() <= 0) {
+        printf("当前线程已经达到上限, 不能够继续创建!");
+    }
+    else {
+        threadVecNum.push_back(currentThread->getThreadId());
+    }
     printf("threadVecNum.size() == %d\n", threadVecNum.size());
     threadToBeDestroyed = currentThread;
     Sleep();					// invokes SWITCH
