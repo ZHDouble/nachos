@@ -17,6 +17,7 @@
 #include "timer.h"
 #include <vector>
 #include <map>
+#include <list>
 #include <iostream>
 using namespace std;
 // Initialization and cleanup routines
@@ -32,7 +33,7 @@ extern Interrupt *interrupt;			// interrupt status
 extern Statistics *stats;			// performance metrics
 extern Timer *timer;				// the hardware alarm clock
 
-extern vector<int> threadVecNum;
+extern list<int> threadVecNum;
 extern map<int, Thread *> threadManage;
 #ifdef USER_PROGRAM
 #include "machine.h"

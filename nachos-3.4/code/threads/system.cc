@@ -18,7 +18,7 @@ Interrupt *interrupt;			// interrupt status
 Statistics *stats;			// performance metrics
 Timer *timer;				// the hardware timer device,
 					// for invoking context switches
-vector<int> threadVecNum(128);
+list<int> threadVecNum;
 map<int, Thread *> threadManage;
 #ifdef FILESYS_NEEDED
 FileSystem  *fileSystem;
@@ -40,6 +40,8 @@ PostOffice *postOffice;
 // External definition, to allow us to take a pointer to this function
 extern void Cleanup();
 
+//
+extern void ThreadManageInit();
 
 //----------------------------------------------------------------------
 // TimerInterruptHandler
@@ -81,6 +83,7 @@ Initialize(int argc, char **argv)
     int argCount;
     char* debugArgs = "";
     bool randomYield = FALSE;
+    ThreadManageInit();
 #ifdef USER_PROGRAM
     bool debugUserProg = FALSE;	// single step user program
 #endif

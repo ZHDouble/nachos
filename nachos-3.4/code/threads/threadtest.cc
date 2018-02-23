@@ -48,35 +48,36 @@ ThreadTest1()
     DEBUG('t', "Entering ThreadTest1");
     if (threadVecNum.size() == 0) {
         printf("the thread num has max limit!");
-        exit();
     }
     else if (threadVecNum.size() < 0) {
         printf("the thread num is error!");
-        exit();
     }
     else {
         int TempId = 0;
         Thread *t1 = new Thread("forked thread");
-        TempId = threadVecNum.pop_front();
+        TempId = threadVecNum.front();
+        threadVecNum.pop_front();
         t1->setUserId(TempId);
         t1->setThreadId(TempId);
         t1->Fork(SimpleThread, t1->getThreadId());
         
         Thread *t2 = new Thread("forked thread");
-        TempId = threadVecNum.pop_front();
+        TempId = threadVecNum.front();
+        threadVecNum.pop_front();
         t2->setUserId(TempId);
         t2->setThreadId(TempId);
         t2->Fork(SimpleThread, t2->getThreadId());
         
         Thread *t3 = new Thread("forked thread");
-        TempId = threadVecNum.pop_front();
+        TempId = threadVecNum.front();
+        threadVecNum.pop_front();
         t3->setUserId(TempId);
         t3->setThreadId(TempId);
         t3->Fork(SimpleThread, t3->getThreadId());
+       // t1->Finish();
+       // t2->Finish();
+       // t3->Finish();
     }
-    t1->Finish();
-    t2->Finish();
-    t3->Finish();
     //SimpleThread(0);
 }
 
