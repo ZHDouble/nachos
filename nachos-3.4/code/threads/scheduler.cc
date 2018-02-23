@@ -70,6 +70,8 @@ Scheduler::ReadyToRun (Thread *thread)
 Thread *
 Scheduler::FindNextToRun ()
 {
+    Thread * currentThread;
+    currentThread = (Thread *)readyList;
     return (Thread *)readyList->Remove();
 }
 

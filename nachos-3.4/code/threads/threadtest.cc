@@ -60,7 +60,7 @@ ThreadTest1()
         t1->setUserId(TempId);
         t1->setThreadId(TempId);
         t1->Fork(SimpleThread, t1->getThreadId());
-        
+
         Thread *t2 = new Thread("forked thread");
         TempId = threadVecNum.front();
         threadVecNum.pop_front();
@@ -74,8 +74,8 @@ ThreadTest1()
         t3->setUserId(TempId);
         t3->setThreadId(TempId);
         t3->Fork(SimpleThread, t3->getThreadId());
-       // t1->Finish();
        // t2->Finish();
+	printf("*** threadId %d userId %d\n", t1->getThreadId(), t1->getUserId());
        // t3->Finish();
     }
     //SimpleThread(0);

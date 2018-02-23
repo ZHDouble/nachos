@@ -147,7 +147,8 @@ Thread::Finish ()
     ASSERT(this == currentThread);
     
     DEBUG('t', "Finishing thread \"%s\"\n", getName());
-    
+    threadVecNum.push_back(currentThread->getThreadId());
+    printf("threadVecNum.size() == %d\n", threadVecNum.size());
     threadToBeDestroyed = currentThread;
     Sleep();					// invokes SWITCH
     // not reached
