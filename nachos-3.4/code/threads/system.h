@@ -32,7 +32,7 @@ extern Interrupt *interrupt;			// interrupt status
 extern Statistics *stats;			// performance metrics
 extern Timer *timer;				// the hardware alarm clock
 
-extern vector<int> zhd_testint;
+extern vector<int> threadVecNum;
 extern map<int, Thread *> threadManage;
 #ifdef USER_PROGRAM
 #include "machine.h"

@@ -18,7 +18,7 @@ Interrupt *interrupt;			// interrupt status
 Statistics *stats;			// performance metrics
 Timer *timer;				// the hardware timer device,
 					// for invoking context switches
-vector<int> zhd_testint;
+vector<int> threadVecNum(128);
 map<int, Thread *> threadManage;
 #ifdef FILESYS_NEEDED
 FileSystem  *fileSystem;
@@ -195,7 +195,11 @@ Cleanup()
     Exit(0);
 }
 
-void ThreadManageInit()
+void
+ThreadManageInit()
 {
-    ;
+    int i = 0;
+    for (i = 0; i < 128; i++) {
+        threadVecNum.push_back(i);
+    }
 }
