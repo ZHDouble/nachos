@@ -225,23 +225,27 @@ Thread::Sleep ()
     scheduler->Run(nextThread); // returns when we've been signalled
 }
 
-void setUserId(int id)
+void 
+Thread::setUserId(int id)
 {
     userId = id;
 }
 
-int getUserId()
+int 
+Thread::getUserId()
 {
     printf("currUser is %d\n", userId);
     return userId;
 }
 
-void setThreadId(int id)
+void 
+Thread::setThreadId(int id)
 {
     threadId = id;
 }
 
-int getThreadId()
+int 
+Thread::getThreadId()
 {
     printf("currThread is %d\n", threadId);
     return threadId;
