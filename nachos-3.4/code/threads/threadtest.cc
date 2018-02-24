@@ -30,7 +30,7 @@ SimpleThread(int which)
 {
     int num;
     
-    for (num = 0; num < 5; num++) {
+    for (num = 0; num < 1; num++) {
 	printf("*** thread %d looped %d times threadId %d userId %d\n", which, num, currentThread->getThreadId(), currentThread->getUserId());
         currentThread->Yield();
     }
@@ -54,9 +54,10 @@ ThreadTest1()
         printf("the thread num is error!");
     }
     else {
-        for (i = 0; i < 133; i++) {
+        for (i = 0; i < 3; i++) {
             Thread *t1 = new Thread("forked thread1");
             t1->Fork(SimpleThread, t1->getThreadId());
+	    //Ts();
         }
     }
     //SimpleThread(0);

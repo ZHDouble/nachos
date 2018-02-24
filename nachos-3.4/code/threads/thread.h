@@ -80,10 +80,6 @@ class Thread {
     int* stackTop;			 // the current stack pointer
     int machineState[MachineStateSize];  // all registers except for stackTop
     
-    int userId;
-    int threadId;
-    
-
   public:
     Thread(char* debugName);		// initialize a Thread 
     ~Thread(); 				// deallocate a Thread
@@ -91,6 +87,8 @@ class Thread {
 					// must not be running when delete 
 					// is called
 
+    int userId;
+    int threadId;
     // basic thread operations
 
     void Fork(VoidFunctionPtr func, int arg); 	// Make thread run (*func)(arg)
@@ -110,7 +108,7 @@ class Thread {
     int getUserId();
     void setThreadId(int id);
     int getThreadId();
-
+    int getStatus();
   private:
     // some of the private data for this class is listed above
     

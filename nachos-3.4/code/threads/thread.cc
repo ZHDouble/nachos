@@ -41,16 +41,6 @@ Thread::Thread(char* threadName)
 #ifdef USER_PROGRAM
     space = NULL;
 #endif
-    if (threadVecNum.size() <= 0) {
-        printf("当前线程已经达到上限, 不能够继续创建!");
-    }
-    else {
-        int TempId = 0;
-        TempId = threadVecNum.front();
-        threadVecNum.pop_front();
-        currentThread->setUserId(TempId);
-        currentThread->setThreadId(TempId);
-    }
 }
 
 //----------------------------------------------------------------------
@@ -101,12 +91,26 @@ Thread::Fork(VoidFunctionPtr func, int arg)
     DEBUG('t', "Forking thread \"%s\" with func = 0x%x, arg = %d\n",
     name, (int) func, arg);
     
-    StackAllocate(func, arg);
+    if (threadVecNum.size() <= 0) {
+        printf("当前线程已经达到上限, 不能够继续创建!\n");
+        return;
+    }
+    else {
+        int TempId = 0;
+        TempId = threadVecNum.front();
+	//printf("TempId == %d\n", TempId);
+        threadVecNum.pop_front();
+        setUserId(TempId);
+        setThreadId(TempId);
+	threadManage.insert(pair<int, Thread *>(TempId, this));
+    	//printf("userid == %d, threadid == %d\n", getUserId(), getThreadId());
+        StackAllocate(func, arg);
 
-    IntStatus oldLevel = interrupt->SetLevel(IntOff);
-    scheduler->ReadyToRun(this);	// ReadyToRun assumes that interrupts 
+        IntStatus oldLevel = interrupt->SetLevel(IntOff);
+        scheduler->ReadyToRun(this);	// ReadyToRun assumes that interrupts 
                     // are disabled!
-    (void) interrupt->SetLevel(oldLevel);
+        (void) interrupt->SetLevel(oldLevel);
+    }
 }    
 
 //----------------------------------------------------------------------
@@ -154,17 +158,13 @@ Thread::CheckOverflow()
 void
 Thread::Finish ()
 {
+    threadVecNum.push_back(getThreadId());
+    //printf("threadVecNum.size() == %d\n", threadVecNum.size());
+
     (void) interrupt->SetLevel(IntOff);		
     ASSERT(this == currentThread);
     
     DEBUG('t', "Finishing thread \"%s\"\n", getName());
-    if (threadVecNum.size() <= 0) {
-        printf("当前线程已经达到上限, 不能够继续创建!");
-    }
-    else {
-        threadVecNum.push_back(currentThread->getThreadId());
-    }
-    printf("threadVecNum.size() == %d\n", threadVecNum.size());
     threadToBeDestroyed = currentThread;
     Sleep();					// invokes SWITCH
     // not reached
@@ -268,6 +268,12 @@ Thread::getThreadId()
     return threadId;
 }
 
+int
+Thread::getStatus()
+{
+    return status;
+}
+
 //----------------------------------------------------------------------
 // ThreadFinish, InterruptEnable, ThreadPrint
 //	Dummy functions because C++ does not allow a pointer to a member
@@ -360,4 +366,5 @@ Thread::RestoreUserState()
     for (int i = 0; i < NumTotalRegs; i++)
 	machine->WriteRegister(i, userRegisters[i]);
 }
+
 #endif

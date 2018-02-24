@@ -42,7 +42,6 @@ extern void Cleanup();
 
 //
 extern void ThreadManageInit();
-
 //----------------------------------------------------------------------
 // TimerInterruptHandler
 // 	Interrupt handler for the timer device.  The timer device is
@@ -205,4 +204,17 @@ ThreadManageInit()
     for (i = 0; i < 128; i++) {
         threadVecNum.push_back(i);
     }
+}
+
+void
+Ts()
+{
+    Thread * TempThread;
+    map<int, Thread *>::iterator it;
+    for (it = threadManage.begin(); it != threadManage.end(); ++it)
+    {
+        TempThread = it->second;
+        printf("thread id is: %d, thread statud is: %d\n", TempThread->getThreadId(), TempThread->getStatus());
+    }
+    //printf("threadManage.size() == %d\n", threadManage.size());
 }
