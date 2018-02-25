@@ -242,12 +242,14 @@ Thread::Sleep ()
     scheduler->Run(nextThread); // returns when we've been signalled
 }
 
+// lab1 20180222 add by zhanghuan
 void 
 Thread::setUserId(int id)
 {
     userId = id;
 }
 
+// lab1 20180222 add by zhanghuan
 int 
 Thread::getUserId()
 {
@@ -255,12 +257,14 @@ Thread::getUserId()
     return userId;
 }
 
+// lab1 20180222 add by zhanghuan
 void 
 Thread::setThreadId(int id)
 {
     threadId = id;
 }
 
+// lab1 20180222 add by zhanghuan
 int 
 Thread::getThreadId()
 {
@@ -268,12 +272,26 @@ Thread::getThreadId()
     return threadId;
 }
 
+// lab1 20180222 add by zhanghuan
 int
 Thread::getStatus()
 {
     return status;
 }
 
+// lab2 20180225 add by zhanghuan
+int
+Thread::setPriority(int prior)
+{
+	priority = prior;
+}
+
+// lab2 20180225 add by zhanhuan
+int
+Thread::getPriority()
+{
+	return priority;
+}
 //----------------------------------------------------------------------
 // ThreadFinish, InterruptEnable, ThreadPrint
 //	Dummy functions because C++ does not allow a pointer to a member

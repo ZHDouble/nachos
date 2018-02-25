@@ -79,6 +79,8 @@ class Thread {
     // THEY MUST be in this position for SWITCH to work.
     int* stackTop;			 // the current stack pointer
     int machineState[MachineStateSize];  // all registers except for stackTop
+
+	int priority;					// lab2 优先级	20180225 add by zhanghuan
     
   public:
     Thread(char* debugName);		// initialize a Thread 
@@ -87,8 +89,8 @@ class Thread {
 					// must not be running when delete 
 					// is called
 
-    int userId;
-    int threadId;
+    int userId;						// lab1 用户ID	20180222 add by zhanghuan
+    int threadId;					// lab1 线程ID	20180222 add by zhanghuan
     // basic thread operations
 
     void Fork(VoidFunctionPtr func, int arg); 	// Make thread run (*func)(arg)
@@ -104,11 +106,13 @@ class Thread {
     char* getName() { return (name); }
     void Print() { printf("%s, ", name); }
     
-    void setUserId(int id);
-    int getUserId();
-    void setThreadId(int id);
-    int getThreadId();
-    int getStatus();
+    void setUserId(int id);			// lab1 20180222 add by zhanghuan
+    int getUserId();					// lab1 20180222 add by zhanghuan
+    void setThreadId(int id);			// lab1 20180222 add by zhanghuan
+    int getThreadId();				// lab1 20180222 add by zhanghuan
+    int getStatus();					// lab1 20180222 add by zhanghuan
+	int setPriority(int prior);	// lab2 20180225 add by zhanghuan
+	int getPriority();				// lab2 20180225 add by zhanghuan
   private:
     // some of the private data for this class is listed above
     

@@ -18,8 +18,10 @@ Interrupt *interrupt;			// interrupt status
 Statistics *stats;			// performance metrics
 Timer *timer;				// the hardware timer device,
 					// for invoking context switches
-list<int> threadVecNum;
-map<int, Thread *> threadManage;
+					
+list<int> threadVecNum;				// lab1 20180222 add by zhanghuan
+map<int, Thread *> threadManage;	// lab1 20180222 add by zhanghuan
+
 #ifdef FILESYS_NEEDED
 FileSystem  *fileSystem;
 #endif
@@ -41,7 +43,7 @@ PostOffice *postOffice;
 extern void Cleanup();
 
 //
-extern void ThreadManageInit();
+extern void ThreadManageInit();	// lab1 20180222 add by zhanghuan
 //----------------------------------------------------------------------
 // TimerInterruptHandler
 // 	Interrupt handler for the timer device.  The timer device is
@@ -206,6 +208,7 @@ ThreadManageInit()
     }
 }
 
+// lab1 20180222 add by zhanghuan
 void
 Ts()
 {

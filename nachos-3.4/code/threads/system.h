@@ -33,8 +33,9 @@ extern Interrupt *interrupt;			// interrupt status
 extern Statistics *stats;			// performance metrics
 extern Timer *timer;				// the hardware alarm clock
 
-extern list<int> threadVecNum;
-extern map<int, Thread *> threadManage;
+extern list<int> threadVecNum;				// lab1 20180222 add by zhanghuan
+extern map<int, Thread *> threadManage;		// lab1 20180222 add by zhanghuan
+
 #ifdef USER_PROGRAM
 #include "machine.h"
 extern Machine* machine;	// user program memory and registers
