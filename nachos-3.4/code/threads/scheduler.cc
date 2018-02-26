@@ -57,7 +57,7 @@ Scheduler::ReadyToRun (Thread *thread)
 
     thread->setStatus(READY);
     //readyList->Append((void *)thread);
-    readyList->SortedInsert((void *)thread, thread->priority);	// 20180225 modify by zhanghuan
+    readyList->SortedInsert((void *)thread, thread->getPriority());	// 20180225 modify by zhanghuan
 }
 
 //----------------------------------------------------------------------
