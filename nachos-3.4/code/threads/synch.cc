@@ -100,13 +100,65 @@ Semaphore::V()
 // Dummy functions -- so we can compile our later assignments 
 // Note -- without a correct implementation of Condition::Wait(), 
 // the test case in the network assignment won't work!
-Lock::Lock(char* debugName) {}
-Lock::~Lock() {}
-void Lock::Acquire() {}
-void Lock::Release() {}
+Lock::Lock(char* debugName) 
+{
+    name = debugName;
+    lock = new Semaphore(debugName, 1);
+}
+Lock::~Lock() 
+{
+    delete lock;
+}
+void Lock::Acquire() 
+{
+    IntStatus oldLevel = interrupt->SetLevel(IntOff);
+    lock->P();
+    (void)interrupt->SetLevel(oldLevel);
+}
+void Lock::Release() 
+{
+    IntStatus oldLevel = interrupt->SetLevel(IntOff);
+    lock->V();
+    (void)interrupt->SetLevel(oldLevel);
+}
 
-Condition::Condition(char* debugName) { }
-Condition::~Condition() { }
-void Condition::Wait(Lock* conditionLock) { ASSERT(FALSE); }
-void Condition::Signal(Lock* conditionLock) { }
+bool Lock::isHeldByCurrentThread()
+{
+    printf("lock->value == %d\n", lock->value);
+    return lock->value;
+}
+
+Condition::Condition(char* debugName)
+{
+    name = debugName;
+    queue = new List;
+}
+Condition::~Condition() 
+{
+    delete queue;
+}
+void Condition::Wait(Lock* conditionLock) 
+{ 
+    IntStatus oldLevel = interrupt->SetLevel(IntOff);
+    ASSERT(conditionLock->isHeldByCurrentThread());
+    conditionLock->Release();
+    queue->Append(currentThread);
+    currentThread->Sleep();
+    conditionLock->Acquire();
+    (void) interrupt->SetLevel(oldLevel);
+}
+void Condition::Signal(Lock* conditionLock) 
+{
+    Thread * nextThread;
+    IntStatus oldLevel = interrupt->SetLevel(IntOff);
+    if (conditionLock->isHeldByCurrentThread())
+    {
+        if (!queue->IsEmpty())
+        {
+            nextThread = (Thread *)queue->Remove();
+            scheduler->ReadyToRun(nextThread);
+        }
+    }
+    (void) interrupt->SetLevel(oldLevel);
+}
 void Condition::Broadcast(Lock* conditionLock) { }
