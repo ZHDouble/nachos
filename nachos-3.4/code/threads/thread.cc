@@ -39,6 +39,7 @@ Thread::Thread(char* threadName)
     stack = NULL;
     status = JUST_CREATED;
     priority = 5;
+    this->setTimeSlice(InitialTimeSlice);
 #ifdef USER_PROGRAM
     space = NULL;
 #endif
@@ -293,6 +294,30 @@ Thread::getPriority()
 {
 	return priority;
 }
+
+// lab3 20180302 add by zhanhuan
+int
+Thread::getTimeSlice()
+{
+	return timeSlice;
+}
+
+// lab3 20180302 add by zhanhuan
+void
+Thread::setTimeSlice(int ts)
+{
+	timeSlice = ts;
+}
+
+// lab3 20180302 add by zhanhuan
+void
+Thread::subTimeSlice(int ts)
+{
+	timeSlice -= ts;
+}
+
+
+
 //----------------------------------------------------------------------
 // ThreadFinish, InterruptEnable, ThreadPrint
 //	Dummy functions because C++ does not allow a pointer to a member

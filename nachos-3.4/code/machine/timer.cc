@@ -78,6 +78,7 @@ Timer::TimerExpired()
 int 
 Timer::TimeOfNextInterrupt() 
 {
+    printf("TimeOfNextInterrupt\n");
     if (randomize)
 	return 1 + (Random() % (TimerTicks * 2));
     else

@@ -9,12 +9,11 @@
  * 	automatics within a procedure, but if you do this, you have to
  *	be careful to allocate a big enough stack to hold the automatics!
  */
-
 #include "syscall.h"
-
 int
 main()
 {
     Halt();
     /* not reached */
 }
+

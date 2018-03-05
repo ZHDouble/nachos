@@ -32,8 +32,7 @@ AS = $(GCCDIR)as
 LD = $(GCCDIR)ld
 
 CPP = gcc -E
-INCDIR =-I../userprog -I../threads -I/usr/include/i386-linux-gnu/sys/ -I/usr/include
-
+INCDIR =-I../userprog -I../threads -I../usr/local
 CFLAGS = -G 0 -c $(INCDIR)
 
 all: halt shell matmult sort

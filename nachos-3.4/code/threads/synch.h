@@ -45,6 +45,7 @@ class Semaphore {
     void P();	 // these are the only operations on a semaphore
     void V();	 // they are both *atomic*
     
+    int GetValue();   
   private:
     char* name;        // useful for debugging
     int value;         // semaphore value, always >= 0
@@ -79,6 +80,7 @@ class Lock {
 
   private:
     char* name;				// for debugging
+    Semaphore * lock;
     // plus some other stuff you'll need to define
 };
 

@@ -12,10 +12,14 @@
 #include "copyright.h"
 #include "system.h"
 #include <vector>
+#include <unistd.h>
 using namespace std;
 // testnum is set in main.cc
 int testnum = 1;
-
+int t = 0;
+Thread *t1 = new Thread("forked thread1");
+Thread *t2 = new Thread("forked thread2");
+Thread *t3 = new Thread("forked thread3");
 //----------------------------------------------------------------------
 // SimpleThread
 // 	Loop 5 times, yielding the CPU to another ready thread 
@@ -36,6 +40,27 @@ SimpleThread(int which)
     }
 }
 
+void
+SimpleThreadLock1(int pvalue)
+{
+    printf("simplethreadlock1 testlock == %d\n", testlock);
+    int AX = testlock;
+    int BX = 20;
+    currentThread->Yield();
+    testlock = AX - BX;
+    printf("simplethreadlock1 t == %d\n", testlock);
+}
+
+void
+SimpleThreadLock2(int pvalue)
+{
+    printf("simplethreadlock2 testlock == %d\n", testlock);
+    int AX = testlock;
+    int BX = 30;
+    currentThread->Yield();
+    testlock = AX - BX;
+    printf("simplethreadlock2 t == %d\n", testlock);
+}
 //----------------------------------------------------------------------
 // ThreadTest1
 // 	Set up a ping-pong between two threads, by forking a thread 
@@ -54,16 +79,19 @@ ThreadTest1()
         printf("the thread num is error!");
     }
     else {
-        Thread *t1 = new Thread("forked thread1");
-        t1->setPriority(4);
-        t1->Fork(SimpleThread, t1->getThreadId());
-        Thread *t2 = new Thread("forked thread2");
-        t2->setPriority(1);
-        t2->Fork(SimpleThread, t2->getThreadId());
-        Thread *t3 = new Thread("forked thread3");
-        t3->setPriority(3);
-        t3->Fork(SimpleThread, t3->getThreadId());
+//-----------------------------------------------------
+//        Thread *t1 = new Thread("forked thread1");
+//        t1->setPriority(4);
+//        t1->Fork(SimpleThread, t1->getThreadId());
+//        Thread *t2 = new Thread("forked thread2");
+//        t2->setPriority(1);
+//        t2->Fork(SimpleThread, t2->getThreadId());
+//        Thread *t3 = new Thread("forked thread3");
+//        t3->setPriority(3);
+//        t3->Fork(SimpleThread, t3->getThreadId());
 	    //Ts();
+
+//-----------------------------------------------------
 	/*
         for (i = 0; i < 3; i++) {
             Thread *t1 = new Thread("forked thread1");
@@ -71,6 +99,14 @@ ThreadTest1()
 	    //Ts();
         }
 	*/
+        t1->Fork(SimpleThreadLock2, 1);
+        t1->setPriority(1);
+        t2->Fork(SimpleThreadLock1, 2);
+        t2->setPriority(2);
+//	for (int k = 0; k < 1000; k++)
+//	{
+//	    usleep(10000);
+//	}
     }
     //SimpleThread(0);
 }

@@ -97,6 +97,11 @@ Semaphore::V()
     (void) interrupt->SetLevel(oldLevel);
 }
 
+int
+Semaphore::GetValue()
+{
+    return value;
+}
 // Dummy functions -- so we can compile our later assignments 
 // Note -- without a correct implementation of Condition::Wait(), 
 // the test case in the network assignment won't work!
@@ -124,8 +129,8 @@ void Lock::Release()
 
 bool Lock::isHeldByCurrentThread()
 {
-    printf("lock->value == %d\n", lock->value);
-    return lock->value;
+    printf("lock->GetValue() == %d\n", lock->GetValue());
+    return lock->GetValue();
 }
 
 Condition::Condition(char* debugName)

@@ -50,7 +50,12 @@
 // For simplicity, this is just the max over all architectures.
 #define MachineStateSize 18 
 
-
+// 20180302
+#define InitialTimeSlice 50
+#define DefaultPriority 128
+#define MacPriority 255
+#define Para_R 5
+#define Para_L 10
 // Size of the thread's private execution stack.
 // WATCH OUT IF THIS ISN'T BIG ENOUGH!!!!!
 #define StackSize	(4 * 1024)	// in words
@@ -81,7 +86,7 @@ class Thread {
     int machineState[MachineStateSize];  // all registers except for stackTop
 
 	int priority;					// lab2 ”≈œ»º∂	20180225 add by zhanghuan
-    
+ 	int timeSlice;   
   public:
     Thread(char* debugName);		// initialize a Thread 
     ~Thread(); 				// deallocate a Thread
@@ -113,6 +118,9 @@ class Thread {
     int getStatus();					// lab1 20180222 add by zhanghuan
 	int setPriority(int prior);	// lab2 20180225 add by zhanghuan
 	int getPriority();				// lab2 20180225 add by zhanghuan
+	int getTimeSlice();
+	void setTimeSlice(int ts);
+	void subTimeSlice(int ts);
   private:
     // some of the private data for this class is listed above
     

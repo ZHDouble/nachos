@@ -21,6 +21,7 @@ Timer *timer;				// the hardware timer device,
 					
 list<int> threadVecNum;				// lab1 20180222 add by zhanghuan
 map<int, Thread *> threadManage;	// lab1 20180222 add by zhanghuan
+int testlock = 100;			// lab3 20180302 add by zhanghuan
 
 #ifdef FILESYS_NEEDED
 FileSystem  *fileSystem;
