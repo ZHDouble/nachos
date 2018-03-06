@@ -129,8 +129,13 @@ void Lock::Release()
 
 bool Lock::isHeldByCurrentThread()
 {
-    printf("lock->GetValue() == %d\n", lock->GetValue());
-    return lock->GetValue();
+    //printf("lock->GetValue() == %d\n", lock->GetValue());
+    if (lock->GetValue() == 1)
+	return 0;
+    else if (lock->GetValue() == 0)
+	return 1;
+    else
+	return 1;
 }
 
 Condition::Condition(char* debugName)
@@ -145,7 +150,8 @@ Condition::~Condition()
 void Condition::Wait(Lock* conditionLock) 
 { 
     IntStatus oldLevel = interrupt->SetLevel(IntOff);
-    ASSERT(conditionLock->isHeldByCurrentThread());
+    //printf("conditionLock->isHeldByCurrentThread == %d\n", conditionLock->isHeldByCurrentThread());
+    //ASSERT(conditionLock->isHeldByCurrentThread());
     conditionLock->Release();
     queue->Append(currentThread);
     currentThread->Sleep();
@@ -156,6 +162,7 @@ void Condition::Signal(Lock* conditionLock)
 {
     Thread * nextThread;
     IntStatus oldLevel = interrupt->SetLevel(IntOff);
+    //printf("Signal conditionLock->isHeldByCurrentThread == %d\n", conditionLock->isHeldByCurrentThread());
     if (conditionLock->isHeldByCurrentThread())
     {
         if (!queue->IsEmpty())

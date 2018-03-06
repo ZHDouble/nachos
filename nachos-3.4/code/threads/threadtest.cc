@@ -11,6 +11,7 @@
 
 #include "copyright.h"
 #include "system.h"
+#include "synch.h"
 #include <vector>
 #include <unistd.h>
 using namespace std;
@@ -20,6 +21,8 @@ int t = 0;
 Thread *t1 = new Thread("forked thread1");
 Thread *t2 = new Thread("forked thread2");
 Thread *t3 = new Thread("forked thread3");
+Lock * mylock = new Lock("my lock");
+Condition * mycond = new Condition("my condition");
 //----------------------------------------------------------------------
 // SimpleThread
 // 	Loop 5 times, yielding the CPU to another ready thread 
@@ -44,10 +47,12 @@ void
 SimpleThreadLock1(int pvalue)
 {
     printf("simplethreadlock1 testlock == %d\n", testlock);
+    mylock->Acquire();          // 加锁
     int AX = testlock;
     int BX = 20;
     currentThread->Yield();
     testlock = AX - BX;
+    mylock->Release();           // 释放
     printf("simplethreadlock1 t == %d\n", testlock);
 }
 
@@ -55,11 +60,31 @@ void
 SimpleThreadLock2(int pvalue)
 {
     printf("simplethreadlock2 testlock == %d\n", testlock);
+    mylock->Acquire();
     int AX = testlock;
     int BX = 30;
     currentThread->Yield();
     testlock = AX - BX;
+    mylock->Release();
     printf("simplethreadlock2 t == %d\n", testlock);
+}
+
+void 
+SimpleThreadLock3(int v)
+{
+    printf("wait st4\n");
+    mylock->Acquire();
+    mycond->Wait(mylock);
+    printf("recv st4 signal\n");
+    mylock->Release();
+}
+void 
+SimpleThreadLock4(int v)
+{
+    mylock->Acquire();
+    mycond->Signal(mylock);
+    printf("send st4 signal\n");
+    mylock->Release();
 }
 //----------------------------------------------------------------------
 // ThreadTest1
@@ -99,9 +124,9 @@ ThreadTest1()
 	    //Ts();
         }
 	*/
-        t1->Fork(SimpleThreadLock2, 1);
+        t1->Fork(SimpleThreadLock3, 1);
         t1->setPriority(1);
-        t2->Fork(SimpleThreadLock1, 2);
+        t2->Fork(SimpleThreadLock4, 2);
         t2->setPriority(2);
 //	for (int k = 0; k < 1000; k++)
 //	{
