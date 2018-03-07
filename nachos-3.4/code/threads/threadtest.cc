@@ -23,6 +23,13 @@ Thread *t2 = new Thread("forked thread2");
 Thread *t3 = new Thread("forked thread3");
 Lock * mylock = new Lock("my lock");
 Condition * mycond = new Condition("my condition");
+
+#define MAX_VALUE 10
+int value = 0;
+Lock * pc_lock = new Lock("pc lock");
+Condition * pc_cond = new Condition("pc condition");
+Semaphore * pc_sem_empty = new Semaphore("pc_sem_empty", 10);
+Semaphore * pc_sem_full = new Semaphore("pc_sem_full", 0);
 //----------------------------------------------------------------------
 // SimpleThread
 // 	Loop 5 times, yielding the CPU to another ready thread 
@@ -86,6 +93,73 @@ SimpleThreadLock4(int v)
     printf("send st4 signal\n");
     mylock->Release();
 }
+
+void 
+SimpleThreadProduce(int v)
+{
+	int i = 0;
+	for (i = 0; i < 20; i++) {
+    	pc_lock->Acquire();
+		if (value >= MAX_VALUE) {
+			pc_cond->Wait(pc_lock);
+		}
+		value += 1;
+		printf("produce value ==== %d\n", value);
+		pc_cond->Signal(pc_lock);
+		pc_lock->Release();
+		if (i % 2 == 0) {
+    			currentThread->Yield();
+		}
+	}
+}
+
+void
+SimpleThreadConsume(int v)
+{
+	int i = 0;
+	for (i = 0; i < 20; i++) {
+		pc_lock->Acquire();
+		if (value == 0) {
+			pc_cond->Wait(pc_lock);
+		}
+		value -= 1;
+		printf("consume value ==== %d\n", value);
+		pc_cond->Signal(pc_lock);
+		pc_lock->Release();
+    		currentThread->Yield();
+	}
+}
+
+void
+SimpleThreadSemProduce(int v)
+{
+	int i = 0;
+	for (i = 0; i < 20; i++) {
+		pc_sem_empty->P();
+		pc_lock->Acquire();
+		value += 1;
+		printf("sem product value ==== %d\n", value);
+		pc_lock->Release();
+		pc_sem_full->V();
+		if (i % 3 == 0)
+    		currentThread->Yield();
+	}
+}
+
+void
+SimpleThreadSemConsume(int v)
+{
+	int i = 0;
+	for (i = 0; i < 20; i++) {
+		pc_sem_full->P();
+		pc_lock->Acquire();
+		value -= 1;
+		printf("sem consume value ==== %d\n", value);
+		pc_lock->Release();
+		pc_sem_empty->V();
+   		currentThread->Yield();
+	}
+}
 //----------------------------------------------------------------------
 // ThreadTest1
 // 	Set up a ping-pong between two threads, by forking a thread 
@@ -124,9 +198,13 @@ ThreadTest1()
 	    //Ts();
         }
 	*/
-        t1->Fork(SimpleThreadLock3, 1);
+        //t1->Fork(SimpleThreadProduce, 1);
+        //t1->setPriority(1);
+        //t2->Fork(SimpleThreadConsume, 2);
+        //t2->setPriority(2);
+        t1->Fork(SimpleThreadSemProduce, 1);
         t1->setPriority(1);
-        t2->Fork(SimpleThreadLock4, 2);
+        t2->Fork(SimpleThreadSemConsume, 2);
         t2->setPriority(2);
 //	for (int k = 0; k < 1000; k++)
 //	{
